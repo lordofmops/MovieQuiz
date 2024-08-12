@@ -1,5 +1,5 @@
-class QuestionFactory : QuestionFactoryProtocol {
-    weak public var delegate: QuestionFactoryDelegate?
+final class QuestionFactory : QuestionFactoryProtocol {
+    weak var delegate: QuestionFactoryDelegate?
     
     init(delegate: QuestionFactoryDelegate? = nil) {
         self.delegate = delegate

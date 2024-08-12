@@ -1,6 +1,8 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
+final class MovieQuizViewController: UIViewController,
+                                     QuestionFactoryDelegate,
+                                     AlertPresenterDelegate {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -12,20 +14,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var correctAnswers = 0
     private var totalAnswers = 0
     
-    
-    private var questionFactory: QuestionFactoryProtocol?
-    private var alertPresenter: AlertPresenterProtocol?
+    private lazy var questionFactory: QuestionFactoryProtocol = QuestionFactory(delegate: self)
+    private lazy var alertPresenter: AlertPresenterProtocol = AlertPresenter(delegate: self)
     private var statisticService: StatisticServiceProtocol = StatisticService()
     private var currentQuestion: QuizQuestion?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let questionFactory = QuestionFactory(delegate: self)
-        self.questionFactory = questionFactory
-        
-        let alertPresenter = AlertPresenter(delegate: self)
-        self.alertPresenter = alertPresenter
         
         questionFactory.requestNextQuestion()
     }
@@ -42,17 +37,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
+    private func changeStateButton(isEnabled: Bool) {
+           noButton.isEnabled = isEnabled
+           yesButton.isEnabled = isEnabled
+       }
+    
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+        changeStateButton(isEnabled: false)
         
         guard let currentQuestion = currentQuestion else { return }
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+        changeStateButton(isEnabled: false)
         
         guard let currentQuestion = currentQuestion else { return }
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
@@ -98,30 +96,34 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 total: currentQuestionIndex + 1,
                 date: Date()))
             
-            alertPresenter?.show(alertModel: AlertModel(
-                title: "Этот раунд окончен!",
-                message: "Ваш результат: \(self.correctAnswers)/\(questionsAmount)\n"
-                + "Количество сыгранных квизов: \(statisticService.gamesCount)\n"
-                + "Рекорд: \(statisticService.bestGame.correct)/\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))\n"
-                + "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%",
-                buttonText: "Сыграть еще раз",
+            let title = "Этот раунд окончен!"
+            let message = """
+            Ваш результат: \(self.correctAnswers)/\(questionsAmount)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд: \(statisticService.bestGame.correct)/\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+            """
+            let buttonText = "Сыграть еще раз"
+            
+            alertPresenter.show(alertModel: AlertModel(
+                title: title,
+                message: message,
+                buttonText: buttonText,
                 completion: { [weak self] in
                     guard let self = self else { return }
                     
                     self.currentQuestionIndex = 0
                     self.correctAnswers = 0
                     
-                    self.yesButton.isEnabled = true
-                    self.noButton.isEnabled = true
+                    changeStateButton(isEnabled: true)
                     
-                    self.questionFactory?.requestNextQuestion()
+                    self.questionFactory.requestNextQuestion()
                 }))
         } else {
-            yesButton.isEnabled = true
-            noButton.isEnabled = true
+            changeStateButton(isEnabled: true)
             currentQuestionIndex += 1
             
-            questionFactory?.requestNextQuestion()
+            questionFactory.requestNextQuestion()
         }
     }
 }
