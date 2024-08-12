@@ -103,17 +103,24 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="vQT-cM-1M8">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <color key="color" name="YP Gray"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="vQT-cM-1M8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1m6-55-awI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DVr-nl-LLO" secondAttribute="trailing" constant="20" id="7xG-9P-Cvr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="DVr-nl-LLO" secondAttribute="bottom" id="T00-Db-ozW"/>
                             <constraint firstItem="DVr-nl-LLO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Xjn-vi-bVH"/>
                             <constraint firstItem="DVr-nl-LLO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="eDx-4A-ePl"/>
+                            <constraint firstItem="vQT-cM-1M8" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="gGj-kg-I9U"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="vQT-cM-1M8" id="ic3-EF-9gC"/>
                         <outlet property="counterLabel" destination="Z1M-HT-v7b" id="DtB-Hs-ToB"/>
                         <outlet property="imageView" destination="ZLU-Es-k2u" id="WZV-Oj-OGe"/>
                         <outlet property="noButton" destination="78X-Sd-WU9" id="wr4-ki-vt1"/>
@@ -129,6 +136,9 @@
     <resources>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP Gray">
+            <color red="0.90196078431372551" green="0.90980392156862744" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
