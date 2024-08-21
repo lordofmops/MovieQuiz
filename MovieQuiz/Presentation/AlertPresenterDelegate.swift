@@ -1,3 +1,3 @@
 protocol AlertPresenterDelegate: AnyObject {
-    func showNextQuestionOrResults()
+    func show(result: QuizResultsViewModel)
 }
