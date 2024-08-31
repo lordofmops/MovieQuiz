@@ -30,8 +30,8 @@ final class QuestionFactory : QuestionFactoryProtocol {
             var text = "Рейтинг этого фильма больше, чем \(questionRating)?"
             var correctAnswer = rating > Float(questionRating)
             
-            let questionTempl = (0...1).randomElement() ?? 0
-            if (questionTempl == 1) {
+            let questionTemplate = (0...1).randomElement() ?? 0
+            if (questionTemplate == 1) {
                 text = "Рейтинг этого фильма меньше, чем \(questionRating)?"
                 correctAnswer = rating < Float(questionRating)
             }
